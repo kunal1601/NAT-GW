@@ -1,0 +1,34 @@
+Launch an Linux instance
+SSH connect to this instance
+Run following commands :
+  sudo su - root
+  yum update -y
+  amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+  yum install -y httpd mariadb-server
+  systemctl start httpd
+  systemctl enable httpd
+  sudo usermod -a -G apache ec2-user
+  sudo chown -R ec2-user:apache /var/www
+  sudo chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
+  find /var/www -type f -exec sudo chmod 0664 {} \;
+  systemctl start mariadb
+  mysql_secure_installation
+[Set password and set everything else Y]
+  mysql -u root -p   <--Creating database
+  CREATE DATABASE Wordpress-db;  [Can give any name for database]
+  USE Wordpress_db;
+  exit;
+  
+After installing or complteing all the above steps. Now click on the 
+  Elastic Block Store >> Volumes
+In this section you we will See a ebs volume which is attached to your Ec2 instacnce in which you installed all the mysql related softwares. 
+Now Select that volume and click on 
+  Actions >> create snapshot
+  After snapshot is created click on 
+   'Elastic Block Store' >> Snapshot
+Here you will see your snapshot which you created above .
+Now Select that snapshot and click on
+ Actions >> Create Image (Now your image will be created)
+ To see your own ami go to 
+ Images >> AMIs
+ Finally you can use your own Mysql image for launching any Ec2 instance.
